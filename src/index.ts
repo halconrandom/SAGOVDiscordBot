@@ -9,7 +9,6 @@ import {
   GatewayIntentBits,
   ChannelType,
   PermissionFlagsBits,
-  SlashCommandBuilder,
   MessageFlags,
   ContainerBuilder,
   SectionBuilder,
@@ -40,6 +39,7 @@ import {
 } from "discord.js";
 import { promises as fs } from "fs";
 import * as path from "path";
+import { slashCommandData } from "./commands";
 
 const client = new Client({
   intents: [
@@ -54,47 +54,6 @@ const PARENT_CATEGORY_ID = "1430124446575759400";
 const LOGS_CHANNEL_ID = "1430124335082770482";
 const RENAME_ROLE_ID = "1429936722568937574";
 const CLOSE_ROLE_ID = "1449612387320856689";
-
-const commands = [
-  new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Pong con Components V2")
-    .toJSON(),
-  new SlashCommandBuilder()
-    .setName("clear")
-    .setDescription("Borrar mensajes recientes del canal")
-    .addIntegerOption((opt) =>
-      opt
-        .setName("count")
-        .setDescription("Cantidad a borrar (1-100)")
-        .setRequired(true)
-        .setMinValue(1)
-        .setMaxValue(100)
-    )
-    .toJSON(),
-  new SlashCommandBuilder()
-    .setName("paneltickets")
-    .setDescription("Enviar panel de tickets en el canal actual")
-    .toJSON(),
-  new SlashCommandBuilder()
-    .setName("openticket")
-    .setDescription("Abrir un ticket manualmente")
-    .toJSON(),
-  new SlashCommandBuilder()
-    .setName("panelssu")
-    .setDescription("Enviar panel de solicitud de escolta SSU")
-    .toJSON(),
-  new SlashCommandBuilder()
-    .setName("addmember")
-    .setDescription("Añadir un miembro al canal actual")
-    .addUserOption((opt) =>
-      opt
-        .setName("member")
-        .setDescription("Miembro que obtendrá acceso al canal")
-        .setRequired(true)
-    )
-    .toJSON(),
-];
 
 const claims = new Map<string, string>();
 
@@ -833,7 +792,7 @@ function buildTicketLogComponents(
 
 client.once("clientReady", async () => {
   await loadCounters();
-  const jsonCommands = commands;
+  const jsonCommands = slashCommandData;
   for (const [, guild] of client.guilds.cache) {
     await guild.commands.set(jsonCommands);
   }

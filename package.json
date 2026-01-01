@@ -6,6 +6,7 @@
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
     "dev": "npx ts-node src/index.ts",
+    "deploy": "npx ts-node src/deployCommands.ts",
     "test": "echo \"No hay tests configurados\" && exit 0"
   },
   "keywords": [],
